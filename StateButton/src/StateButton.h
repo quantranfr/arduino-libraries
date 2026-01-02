@@ -10,9 +10,13 @@ public:
   StateButton(uint8_t buttonPin);
 
   void begin();
-  void update();                 // to be called from loop()
+  void update();                // to be called from loop()
 
   void onPressed(OnPressedCallback callback);
+
+  // Kid-friendly API
+  bool pressed();               // true once per press
+  bool isDown();                // true while held
 
 private:
   enum State {
@@ -25,13 +29,14 @@ private:
   void transition(State newState);
 
   uint8_t _buttonPin;
-
   State _state;
   unsigned long _stateTime;
 
   OnPressedCallback _onPressed;
 
   static const unsigned long DEBOUNCE_MS = 50;
+
+  bool _pressedEvent;           // for Kid-friendly API
 };
 
 #endif

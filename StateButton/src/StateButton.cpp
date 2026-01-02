@@ -4,7 +4,8 @@ StateButton::StateButton(uint8_t buttonPin)
   : _buttonPin(buttonPin),
     _state(IDLE),
     _stateTime(0),
-    _onPressed(nullptr) {}
+    _onPressed(nullptr),
+    _pressedEvent(false) {}
 
 void StateButton::begin() {
   pinMode(_buttonPin, INPUT);
@@ -28,6 +29,7 @@ void StateButton::update() {
         if (_onPressed) {
           _onPressed();
         }
+        _pressedEvent = true;           // <<< LATCH EVENT
         transition(PRESSED);
       }
       break;
@@ -56,4 +58,19 @@ void StateButton::transition(State newState) {
 void StateButton::onPressed(OnPressedCallback callback) {
   _onPressed = callback;
 }
+
+// -------- Kid-friendly API --------
+
+bool StateButton::pressed() {
+  if (_pressedEvent) {
+    _pressedEvent = false;  // auto-clear
+    return true;
+  }
+  return false;
+}
+
+bool StateButton::isDown() {
+  return _state == PRESSED;
+}
+
 

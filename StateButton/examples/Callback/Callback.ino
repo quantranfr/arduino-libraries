@@ -1,6 +1,6 @@
 #include <StateButton.h>
 
-StateButton button(2);
+StateButton button(A1);
 
 void onButtonPressed() {
   Serial.println("Button pressed!");
